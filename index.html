@@ -18,10 +18,31 @@
 	<li>PCA - use to reduce the number of predictors (variables)</li>
 	<li>Trees
 	<ul>
+		<li>When you have a large number of variables</li>
 		<li>perhaps useful to predict with trees (better in nonlinear settings)</li>
 		<li>Without cross validation can lead to overfitting</li>
 	</ul>
 	</li>
+	<li>Bagging - bootstrap aggregating
+	<ul>
+		<li>Resample data (training data) with replacement (bootstrap)</li>
+		<li>Recalculate prediction function on resampled data</li>
+		<li>average predictors</li>
+		<li>similar bias found</li>
+		<li>less variance (smoother model)</li>
+		<li>Useful for nonlinear models e.g. trees, random forests</li>
+	</ul>
+	</li>
+	<li>Random Forests - extension to bagging for classification or regression trees
+	<ul>
+		<li>Resample training data with replacement (bootstrap)</li>
+		<li>Rebuild tree on each resampled data</li>
+		<li>As an individual observation goes through each tree it could end up with slightly different prediction</li>
+		<li>Then average the predictions together from each tree</li>
+		<li>Top performing (predicting,very accurate) along with boosting</li>
+	</ul>
+	</li>
+	<li>&nbsp;</li>
 </ul>
 </body>
 </html>
