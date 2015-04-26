@@ -23,9 +23,9 @@ Steps to create a model to predict the manner in which exercises are performed:
 ## R Environment Setup
 
 ```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
-install.packages(“caret”,dependencies=TRUE)
-install.packages(“randomForest”,dependencies=TRUE)
-install.packages(“doParallel”,dependencies=TRUE)
+install.packages("caret",dependencies=TRUE)
+install.packages("randomForest",dependencies=TRUE)
+install.packages("doParallel",dependencies=TRUE)
 library(caret)
 library(randomForest)
 library(doParallel)
