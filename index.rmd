@@ -9,6 +9,7 @@ The data for this project come from this source: http://groupware.les.inf.puc-ri
 ## Approach
 
 Steps to create a model to predict the manner in which exercises are performed:
+
 1. Load the training and test data
 2. Clean up both datasets
 3. Partition the training set into training and test data
@@ -80,29 +81,37 @@ This results in the following data that has just the outcome variable (in the tr
 
 We partition on the classe variable, and in the case use a 75/25 split for training/test data
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 inTrain <- createDataPartition(training$classe,p=0.75,list=FALSE)
 trainData <- training[inTrain,]
 testData <- training[-inTrain,]
+```
 
 This gives us the following data partitions:
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 > dim(trainData)
 [1] 14718    53
 > dim(testData)
 [1] 4904   53
+```
 
 ## Set up parallel/multicore processing
 
 Although I ran this on an i7 2.00 GHz 8 core CPU with 16 GB RAM, I had memory allocation issues trying it with more than 4 cores allocated to the processing. Here are the settings I used:
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 cl <- makeCluster(4)
 registerDoParallel(cl)
+```
 
 ## Train model using Random Forest
 
 I’m using the random forest method as it works well on a large number of variables (we have 52), and there is no need for applying principal component analysis (pca) to reduce the number of predictors, this is implicit in its method, it randomly finds the best fitting predictors. Random forest can lead to overfitting without cross validation. Here we use cross validation with resampling, to produce a low variance but still get good bias.
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 modelFit <- train(classe ~ .,data=trainData,method="rf",trControl=trainControl(method="cv",number=5,allowParallel=TRUE),prox=TRUE)
+```
 
 This produces the model below. You can see that it used the 52 predictors, and found 5 factors in the classe variable, A,B,C,D and E. It also used resampling 5 times with cross-validation.
 
@@ -110,6 +119,7 @@ Interestingly enough the final mtry was 2 out of the 52 possible predictors. The
 
 Also the finalModel has 500 trees, although you can see from the plot below (the Final Model figure) that after about 100 trees the error doesn’t change much across all classes.
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 > modelFit
 Random Forest 
 
@@ -131,10 +141,12 @@ Resampling results across tuning parameters:
 
 Accuracy was used to select the optimal model using  the largest value.
 The final value used for the model was mtry = 2.
+```
 
 ### ModelFit Figure
 ![Model Fit Figure](figs/modelFit.png)
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 > modelFit$finalModel
 
 Call:
@@ -151,6 +163,7 @@ B   19 2822    7    0    0 0.0091292135
 C    0   17 2548    2    0 0.0074016362
 D    0    0   41 2368    3 0.0182421227
 E    0    0    2    7 2697 0.0033259424
+```
 
 ### Final Model Figure
 ![Final Model Figure](figs/modelFitFinalModel.png)
@@ -159,6 +172,7 @@ E    0    0    2    7 2697 0.0033259424
 
 Applying this to our created test set (not the given test set), we can see how well our model performs. Below from the confusionMatrix you can see that we estimate a high level of accuracy, 99.55%.
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 testPred <- predict(modelFit,newdata=testData)
 
 > confusionMatrix(testPred,testData$classe)
@@ -193,13 +207,16 @@ Prevalence             0.2845   0.1935   0.1743   0.1639   0.1837
 Detection Rate         0.2838   0.1929   0.1727   0.1625   0.1835
 Detection Prevalence   0.2845   0.1947   0.1746   0.1627   0.1835
 Balanced Accuracy      0.9985   0.9973   0.9942   0.9955   0.9994
+```
 
 ## Estimate Out of Sample Error
 
 To verify what the confusionMatrix output is telling us about the estimated accuracy and out of sample error, we calculate the accuracy ourselves, (correct answers/number of rows), then invert that to get the estimate of the Out of Sample Error.
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 > (1 - sum(testPred == testData$classe)/length(testPred)) * 100
 [1] 0.4486134
+```
 
 So the estimated Out of Sample Error for the above model is:
 
@@ -211,7 +228,9 @@ which coincides with what the confusionMatrix is telling us i.e. (1 - 0.9955) * 
 
 Now we can apply our model to the given test data, the data we want to determine outcomes for.
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 answers <- predict(modelFit,newdata=testingData)
+```
 
 This gives us a list of outcomes for each of the 20 test rows with one value for each test row that is one of A,B,C,D or E.
 
@@ -219,6 +238,7 @@ This gives us a list of outcomes for each of the 20 test rows with one value for
 
 To upload the answers to be assessed, I’m using the code given on the Coursera website:
 
+```{r setup, cache = F, echo = F, message = F, warning = F, tidy = F}
 pml_write_files = function(x){
   n = length(x)
   for(i in 1:n){
@@ -228,5 +248,6 @@ pml_write_files = function(x){
 }
 
 pml_write_files(answers)
+```
 
 This produces 20 files called problem_id_1.txt through problem_id_20.txt, each with one of A,B,C,D or E in them.
