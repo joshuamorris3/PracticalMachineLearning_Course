@@ -4,59 +4,6 @@
 	<title>HTML Editor - Full Version</title>
 </head>
 <body>
-<h1>Practical Machine Learning Course Writeup</h1>
-
-<p>My course submission...</p>
-
-<ul>
-	<li>Cross validation - since we can&#39;t use the test set for modelling, use the training set by breaking it up into training and test sets
-	<ul>
-		<li>Use 60% training, 20% testing, 20% validation</li>
-	</ul>
-	</li>
-	<li>Will we need to remove zero covariates?</li>
-	<li>PCA - use to reduce the number of predictors (variables)</li>
-	<li>Trees
-	<ul>
-		<li>When you have a large number of variables</li>
-		<li>perhaps useful to predict with trees (better in nonlinear settings)</li>
-		<li>Without cross validation can lead to overfitting</li>
-	</ul>
-	</li>
-	<li>Bagging - bootstrap aggregating
-	<ul>
-		<li>Resample data (training data) with replacement (bootstrap)</li>
-		<li>Recalculate prediction function on resampled data</li>
-		<li>average predictors</li>
-		<li>similar bias found</li>
-		<li>less variance (smoother model)</li>
-		<li>Useful for nonlinear models e.g. trees, random forests</li>
-	</ul>
-	</li>
-	<li>Random Forests - extension to bagging for classification or regression trees
-	<ul>
-		<li>Resample training data with replacement (bootstrap)</li>
-		<li>Rebuild tree on each resampled data</li>
-		<li>As an individual observation goes through each tree it could end up with slightly different prediction</li>
-		<li>Then average the predictions together from each tree</li>
-		<li>Top performing (predicting,very accurate) along with boosting</li>
-	</ul>
-	</li>
-	<li>Boosting - along with random forests is one of the most accurate out of the box classifiers
-	<ul>
-		<li>Take lots of weak predictors</li>
-		<li>Weight them (based on error) and add them up</li>
-		<li>Get a stronger predictor</li>
-		<li>Boosting, random forest, and model ensembling are the most common tools that win prediction contests</li>
-	</ul>
-	</li>
-	<li>Model Based Prediction
-	<ul>
-		<li>Assumes data follow a probabilistic flow</li>
-		<li>Uses Bayes theorem to identify optimal classifiers</li>
-		<li>&nbsp;</li>
-	</ul>
-	</li>
-</ul>
+<iframe src="https://docs.google.com/document/d/1xe2r7yNhF2EV1xEyZI4dviT6a4GbfJ0RZEttFpyIi3Q/pub?embedded=true"></iframe>
 </body>
 </html>
